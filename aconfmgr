@@ -22,5 +22,18 @@ else
 	src_dir=/usr/lib/aconfmgr
 fi
 
+if [[ $EUID == 0 ]]; then
+    set +u  # SUDO_USER or DOAS_USER may be unbound so disable -u for this part
+    if [ -n "$SUDO_USER" ]; then
+        calling_user="$SUDO_USER"
+    elif [ -n "$DOAS_USER" ]; then
+        calling_user="$DOAS_USER"
+    else
+        calling_user="$USER"
+    fi
+    set -u
+else
+    calling_user="$USER"
+fi
 # shellcheck source=src/main.bash
 source "$src_dir"/main.bash

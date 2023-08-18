@@ -129,6 +129,7 @@ function AconfCompileOutput() {
 	touch "$output_dir"/warnings
 	# shellcheck disable=SC2174
 	mkdir --mode=700 --parents "$config_dir"
+    [[ $EUID == 0 ]] && chown "$calling_user" "$config_dir" && chmod g+s "$config_dir"
 
 	# Configuration
 
